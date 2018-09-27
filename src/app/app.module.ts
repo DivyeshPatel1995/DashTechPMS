@@ -1,11 +1,13 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
-
+import { AuthenticationService, UserService } from './_service';
+import { AuthGuard } from './_guards';
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
 };
@@ -46,6 +48,7 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
     BrowserModule,
     AppRoutingModule,
     AppAsideModule,
+    HttpClientModule,
     AppBreadcrumbModule.forRoot(),
     AppFooterModule,
     AppHeaderModule,
@@ -54,7 +57,7 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
     BsDropdownModule.forRoot(),
     TabsModule.forRoot(),
     ChartsModule,
-    ReactiveFormsModule ,
+    ReactiveFormsModule,
     FormsModule
   ],
   declarations: [
@@ -66,10 +69,15 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
     RegisterComponent,
     ForgetPasswordComponent
   ],
-  providers: [{
-    provide: LocationStrategy,
-    useClass: HashLocationStrategy
-  }],
-  bootstrap: [ AppComponent ]
+  providers: [
+    AuthGuard,
+    UserService,
+    AuthenticationService,
+    {
+      provide: LocationStrategy,
+      useClass: HashLocationStrategy
+    }
+  ],
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -9,7 +9,7 @@ import { P500Component } from './views/error/500.component';
 import { LoginComponent } from './views/login/login.component';
 import { RegisterComponent } from './views/register/register.component';
 import { ForgetPasswordComponent } from './views/forgetpassword/forgetpassword.component';
-
+import { AuthGuard } from './_guards';
 export const routes: Routes = [
   {
     path: '',
@@ -60,7 +60,7 @@ export const routes: Routes = [
   },
   {
     path: '',
-    component: DefaultLayoutComponent,
+    component: DefaultLayoutComponent,canActivate: [AuthGuard],
     data: {
       title: 'Home'
     },
